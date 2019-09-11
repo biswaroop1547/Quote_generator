@@ -1,3 +1,7 @@
+* {
+  background: #f0e8d2;
+}
+
 #head_img_text {
   display: flex;
   flex-direction: row;
@@ -28,7 +32,6 @@
 #prevAndNext {
   display: flex;
   flex-direction: row;
-  padding-top: 8%;
   margin-left: 12%;
   margin-right: 25%;
   position: absolute;
@@ -48,4 +51,15 @@
   margin-left: 50%;
   margin-right: 10%;
   padding: 1%;
+}
+
+#gen {
+  margin-left: 73%;
+  margin-right: 10%;
+  padding: 1%;
+  position: absolute;
+  bottom: 24%;
+  left: 2%;
+  width: 5%;
+  border: 0px solid;
 }

@@ -5,7 +5,7 @@ export default class QuoteGenerator extends Component {
     randomQuote: "",
     quotes: [],
     indexNum: 0,
-    clickedPrev: false
+    clicked: false
   };
 
   componentDidMount() {
@@ -19,13 +19,13 @@ export default class QuoteGenerator extends Component {
       });
   }
 
-  handleNext = () => {
+  handleGenerate = () => {
     fetch("https://api.quotable.io/random")
       .then(response => response.json())
       .then(response => {
         const { content } = response;
         let quotesCache = this.state.quotes.slice();
-        if (this.state.clickedPrev) {
+        if (this.state.clicked) {
           quotesCache = quotesCache.slice(0, this.state.indexNum + 1);
         }
         quotesCache.push(content);
@@ -34,9 +34,9 @@ export default class QuoteGenerator extends Component {
           quotes: quotesCache,
           indexNum: quotesCache.length - 1
         });
-        this.state.clickedPrev
-          ? this.setState({ clickedPrev: !this.state.clickedPrev })
-          : this.setState({ clickedPrev: this.state.clickedPrev });
+        this.state.clicked
+          ? this.setState({ clicked: !this.state.clicked })
+          : this.setState({ clicked: this.state.clicked });
       });
   };
 
@@ -44,11 +44,27 @@ export default class QuoteGenerator extends Component {
     if (this.state.indexNum > 0) {
       const clickedPrev = true;
       const prevQuote = this.state.quotes[this.state.indexNum - 1].slice();
-      const newIndexNum = this.state.indexNum - 1;
+      const newIndexNumPrev = this.state.indexNum - 1;
       this.setState({
         randomQuote: prevQuote,
-        indexNum: newIndexNum,
-        clickedPrev: clickedPrev
+        indexNum: newIndexNumPrev,
+        clicked: clickedPrev
+      });
+    }
+  };
+
+  handleNext = () => {
+    if (
+      this.state.quotes.length > 1 &&
+      this.state.indexNum + 1 !== this.state.quotes.length
+    ) {
+      const clickedNext = true;
+      const nextQuote = this.state.quotes[this.state.indexNum + 1].slice();
+      const newIndexNumNext = this.state.indexNum + 1;
+      this.setState({
+        randomQuote: nextQuote,
+        indexNum: newIndexNumNext,
+        clicked: clickedNext
       });
     }
   };
@@ -78,6 +94,15 @@ export default class QuoteGenerator extends Component {
               Next
             </button>
           </div>
+        </div>
+        <div id="gen">
+          <button
+            id="genButton"
+            className="btn btn-warning btn-lg"
+            onClick={this.handleGenerate}
+          >
+            Generate
+          </button>
         </div>
       </div>
     );
